@@ -1,0 +1,22 @@
+@startuml c4_containers_diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/latest/C4_Container.puml
+
+Person(client, "Client", "Client of task tracker")
+
+ContainerDb(statisticsDB, "Statistics DB", "OLAP DB: ClickHouse", "Stores stats.")
+ContainerDb(commentaryDatabase, "Comment DB", "OLTP DB: PostgresSQL", "Stores comments.")
+ContainerDb(clientDB, "Client DB", "OLTP DB: PostgresSQL", "Manages and stores client login information and task allocations.")
+
+Container(statisticsService, "Statistics Service", "gRPC", "Records and maintains stats.")
+Container(broker, "Message Broker", "RabbitMQ", "Helps to communicate about events.")
+Container(trackerAPI, "Tracker API", "REST API", "Offers access points for clients to interact with tasks, comments, and stats.")
+Container(commentaryService, "Comment Service", "gRPC", "Oversees and handles task commentaries.")
+
+Rel(client, trackerAPI, "Requests", "HTTPS")
+Rel(trackerAPI, clientDB, "RW Queries", "SQL")
+Rel(trackerAPI, commentaryService, "Calls", "gRPC")
+Rel(trackerAPI, statisticsService, "Calls", "gRPC")
+Rel(trackerAPI, broker, "Publishes", "AMQP")
+Rel(commentaryService, commentaryDatabase, "RW Queries")
+Rel(statisticsService, statisticsDB, "RW Queries")
+@enduml
