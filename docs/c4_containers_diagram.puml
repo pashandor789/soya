@@ -19,4 +19,6 @@ Rel(trackerAPI, statisticsService, "Calls", "gRPC")
 Rel(trackerAPI, broker, "Publishes", "AMQP")
 Rel(commentaryService, commentaryDatabase, "RW Queries")
 Rel(statisticsService, statisticsDB, "RW Queries")
+Rel(statisticsService, broker, "Collecting")
+
 @enduml
