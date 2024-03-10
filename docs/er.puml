@@ -1,0 +1,46 @@
+@startuml er diagram
+
+class task as "Task" << (T,white) >> {
+    +id : int64
+    +user_id : int64
+    +title : varchar
+    +status : varchar
+    +description : text
+}
+
+class like as "Like" << (T,white) >> {
+    +id : int64
+    +user_id : int64
+    +task_id : int64
+}
+
+class commentary as "Commentary" << (T,white) >> {
+    +id : int64
+    +task_id : int64
+    +parent_id : int64
+    +user_id : int64
+    +text : text
+}
+
+class client as "Client" << (T,white) >> {
+    +id : int64
+    +password : varchar
+    +username : varchar
+    +email : varchar
+}
+
+class stats as "Stats" << (T,white) >> {
+    +id : int64
+    +task_id : int64
+    +views : int64
+    +likes : int64
+}
+
+client --|{ task : "fk"
+task --|{ stats : "fk"
+client --|{ commentary : "fk"
+task --|{ like : "fk"
+client --|{ like : "fk"
+task --|{ commentary : "fk"
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml c4_context_diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/latest/C4_Context.puml
+
+Person(client, "Client")
+
+System(taskTracker, "Task Tracker", "System, which helps people to track tasks")
+
+System_Ext(commentaryService, "Commentary Service", "Manager of commentaries")
+System_Ext(broker, "Message Broker", "Like, views event manager")
+System_Ext(statisticsService, "Statistics Service", "Manager of statistics")
+
+Rel(client, taskTracker, "Requests")
+Rel(taskTracker, commentaryService, "Manages")
+Rel(taskTracker, broker, "Events")
+Rel(taskTracker, statisticsService, "Queries")
+
+@enduml
