@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package task_service;
+
+service TaskHolder {
+    rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse) {}
+    rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskResponse) {}
+    rpc DeleteTask (DeleteTaskRequest) returns (DeleteTaskResponse) {}
+    rpc GetTaskById (GetTaskByIdRequest) returns (Task) {}
+    rpc GetAllTasks (GetAllTasksRequest) returns (GetAllTasksResponse) {}
+}
+
+message Task {
+    uint64 id = 1;
+    uint64 user_id = 2;
+    string title = 3;
+    string description = 4;
+}
+
+message GetTaskByIdRequest {
+    uint64 id = 1;
+    uint64 user_id = 2;
+}
+
+message CreateTaskRequest {
+    uint64 user_id = 1;
+    string title = 2;
+    string description = 3;
+}
+
+message CreateTaskResponse {
+    uint64 id = 1;
+}
+
+message UpdateTaskRequest {
+    uint64 id = 1;
+    uint64 user_id = 2;
+    string title = 3;
+    string description = 4;
+}
+
+message DeleteTaskRequest {
+    uint64 id = 1;
+    uint64 user_id = 2;
+}
+
+message UpdateTaskResponse {
+    bool success = 1;
+}
+
+message DeleteTaskResponse {
+    bool success = 1;
+}
+
+message GetAllTasksRequest {
+    uint64 page_number = 1;
+    uint64 page_size = 2;
+}
+
+message GetAllTasksResponse {
+    repeated Task tasks = 1;
+}

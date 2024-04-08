@@ -1,5 +1,4 @@
 grpcio-tools
 grpcio
-sqlalchemy
-fastapi[all]
 psycopg2
+sqlalchemy

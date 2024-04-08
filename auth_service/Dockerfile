@@ -1,7 +1,8 @@
 FROM python:3.10
 
-WORKDIR /server
-COPY . .
+WORKDIR /auth_service
+COPY auth_service .
+COPY gen gen
 
 RUN pip install -r req.txt
 
