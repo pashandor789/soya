@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  taskdb:
+    image: postgres
+    hostname: taskdb
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  userdb:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth_service:
+    build:
+      context: ./
+      dockerfile: ./auth_service/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 8000:8000
+    depends_on:
+      userdb:
+        condition: service_healthy
+
+  task_service:
+    build:
+      context: ./
+      dockerfile: ./task_service/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "13000:13000"
+    depends_on:
+      taskdb:
+        condition: service_healthy
